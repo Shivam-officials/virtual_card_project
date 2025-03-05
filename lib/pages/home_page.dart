@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  static final String routeName = 'homePage';
+  static final String routeName = '/';
 
   const HomePage({super.key});
 
@@ -10,6 +10,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,6 +20,37 @@ class _HomePageState extends State<HomePage> {
         child: Text(
           "This is the HomePage",
           style: Theme.of(context).textTheme.headlineLarge,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        shape: CircleBorder(),
+        onPressed: () {
+          //todo
+        },
+        child: Icon(Icons.add),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        padding: EdgeInsets.zero,
+        clipBehavior: Clip.antiAlias,
+        shape: CircularNotchedRectangle(),
+        notchMargin: 10,
+        child: BottomNavigationBar(
+          onTap: (index) {
+            setState(() {
+              selectedIndex = index;
+            });
+          },
+          currentIndex: selectedIndex,
+          backgroundColor: Colors.blue[100],
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'All'),
+
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: 'Favourite',
+            ),
+          ],
         ),
       ),
     );
