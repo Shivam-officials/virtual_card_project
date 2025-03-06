@@ -14,6 +14,9 @@ class ScanPage extends StatefulWidget {
 }
 
 class _ScanPageState extends State<ScanPage> {
+  bool isScanOver = false;
+  var lines = <String>[];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +37,9 @@ class _ScanPageState extends State<ScanPage> {
                 icon: Icon(Icons.photo_album),
               ),
             ],
+          ),
+          Wrap(
+            children: lines.map((line) => LineItem(lineText: line)).toList(),
           ),
         ],
       ),
@@ -84,6 +90,39 @@ class _ScanPageState extends State<ScanPage> {
       if (kDebugMode) {
         print(" the recognised text is : $tempList");
       }
+
+      setState(() {
+        lines = tempList;
+        isScanOver = true;
+      });
     }
   }
 }
+
+class LineItem extends StatelessWidget {
+  final String lineText;
+  const LineItem({super.key, required this.lineText});
+
+  @override
+  Widget build(BuildContext context) {
+    return LongPressDraggable(
+      key: GlobalKey(),
+      feedback: Container(
+        padding: EdgeInsets.all(8),
+        decoration: const BoxDecoration(color: Colors.black45),
+        child: Text(
+          lineText,
+          style: Theme.of(context,)
+              .textTheme.titleMedium!
+              .copyWith(color: Colors.white
+          ),
+        ),
+      ), // feedback widget shows what will be seen on dragging
+      dragAnchorStrategy: childDragAnchorStrategy,
+      data: lineText,
+      child: Chip(label: Text(lineText)),
+    );
+  }
+}
+
+

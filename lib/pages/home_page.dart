@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Text(
           "This is the HomePage",
-          style: Theme.of(context).textTheme.headlineLarge,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
