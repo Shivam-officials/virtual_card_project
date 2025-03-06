@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:virtual_card_project/utils/constants.dart';
 
 class ScanPage extends StatefulWidget {
   static final String routeName = 'Scan';
@@ -38,6 +39,46 @@ class _ScanPageState extends State<ScanPage> {
               ),
             ],
           ),
+          if (isScanOver)
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    DragTargetItem(
+                      properties: ContactProperties.name,
+                      onDrop: getPropertyValue,
+                    ),
+                    DragTargetItem(
+                      properties: ContactProperties.mobile,
+                      onDrop: getPropertyValue,
+                    ),
+                    DragTargetItem(
+                      properties: ContactProperties.email,
+                      onDrop: getPropertyValue,
+                    ),
+                    DragTargetItem(
+                      properties: ContactProperties.company,
+                      onDrop: getPropertyValue,
+                    ),
+                    DragTargetItem(
+                      properties: ContactProperties.designation,
+                      onDrop: getPropertyValue,
+                    ),
+                    DragTargetItem(
+                      properties: ContactProperties.address,
+                      onDrop: getPropertyValue,
+                    ),
+                    DragTargetItem(
+                      properties: ContactProperties.website,
+                      onDrop: getPropertyValue,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          if (isScanOver)
+            Padding(padding: EdgeInsets.all(8.0), child: Text(hint)),
           Wrap(
             children: lines.map((line) => LineItem(lineText: line)).toList(),
           ),
@@ -97,6 +138,8 @@ class _ScanPageState extends State<ScanPage> {
       });
     }
   }
+
+  getPropertyValue(String property, String value) {}
 }
 
 class LineItem extends StatelessWidget {
@@ -112,10 +155,9 @@ class LineItem extends StatelessWidget {
         decoration: const BoxDecoration(color: Colors.black45),
         child: Text(
           lineText,
-          style: Theme.of(context,)
-              .textTheme.titleMedium!
-              .copyWith(color: Colors.white
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium!.copyWith(color: Colors.white),
         ),
       ), // feedback widget shows what will be seen on dragging
       dragAnchorStrategy: childDragAnchorStrategy,
@@ -125,4 +167,70 @@ class LineItem extends StatelessWidget {
   }
 }
 
+class DragTargetItem extends StatefulWidget {
+  final String properties;
+  final Function(String, String) onDrop;
+  const DragTargetItem({
+    super.key,
+    required this.properties,
+    required this.onDrop,
+  });
 
+  @override
+  State<DragTargetItem> createState() => _DragTargetItemState();
+}
+
+class _DragTargetItemState extends State<DragTargetItem> {
+  String dragItem = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(flex: 1, child: Text(widget.properties)),
+        Expanded(
+          flex: 2,
+          child: DragTarget<String>(
+            builder: (context, candidateData, rejectedData) {
+              return Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  border:
+                      candidateData.isNotEmpty
+                          ? Border.all(color: Colors.red, width: 2)
+                          : null,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(dragItem.isEmpty ? 'Drop here' : dragItem),
+                    ),
+                    if (dragItem.isNotEmpty)
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            dragItem = '';
+                          });
+                        },
+                        child: const Icon(Icons.clear, size: 15),
+                      ),
+                  ],
+                ),
+              );
+            },
+            onAcceptWithDetails: (dropTargetDetails) {
+              setState(() {
+                dragItem =
+                    dragItem.isEmpty
+                        ? dropTargetDetails.data
+                        : "$dragItem ${dropTargetDetails.data}";
+                // widget.onDrop()
+              });
+              widget.onDrop(widget.properties, dragItem);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
