@@ -1,8 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:virtual_card_project/models/ContactModel.dart';
+import 'package:virtual_card_project/pages/form_page.dart';
 import 'package:virtual_card_project/utils/constants.dart';
 
 class ScanPage extends StatefulWidget {
@@ -16,12 +19,31 @@ class ScanPage extends StatefulWidget {
 
 class _ScanPageState extends State<ScanPage> {
   bool isScanOver = false;
-  var lines = <String>[];
+  List<String> lines = [];
+  ContactModel contactDetails = ContactModel();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Scan Page')),
+      appBar: AppBar(
+        title: Text('Scan Page'),
+        actions: [
+          IconButton(
+            onPressed:
+                (contactDetails.image != null)
+                    ? () {
+                      if (isVCardEntryValid()) {
+                        context.goNamed(
+                          FormPage.routeName,
+                          extra: contactDetails,
+                        );
+                      }
+                    }
+                    : null,
+            icon: Icon(Icons.arrow_forward),
+          ),
+        ],
+      ),
       body: ListView(
         children: [
           Row(
@@ -47,31 +69,31 @@ class _ScanPageState extends State<ScanPage> {
                   children: [
                     DragTargetItem(
                       properties: ContactProperties.name,
-                      onDrop: getPropertyValue,
+                      onDrop: setPropertyValue,
                     ),
                     DragTargetItem(
                       properties: ContactProperties.mobile,
-                      onDrop: getPropertyValue,
+                      onDrop: setPropertyValue,
                     ),
                     DragTargetItem(
                       properties: ContactProperties.email,
-                      onDrop: getPropertyValue,
+                      onDrop: setPropertyValue,
                     ),
                     DragTargetItem(
                       properties: ContactProperties.company,
-                      onDrop: getPropertyValue,
+                      onDrop: setPropertyValue,
                     ),
                     DragTargetItem(
                       properties: ContactProperties.designation,
-                      onDrop: getPropertyValue,
+                      onDrop: setPropertyValue,
                     ),
                     DragTargetItem(
                       properties: ContactProperties.address,
-                      onDrop: getPropertyValue,
+                      onDrop: setPropertyValue,
                     ),
                     DragTargetItem(
                       properties: ContactProperties.website,
-                      onDrop: getPropertyValue,
+                      onDrop: setPropertyValue,
                     ),
                   ],
                 ),
@@ -135,11 +157,40 @@ class _ScanPageState extends State<ScanPage> {
       setState(() {
         lines = tempList;
         isScanOver = true;
+        contactDetails = contactDetails.copyWith(image: xFile.path);
       });
     }
   }
 
-  getPropertyValue(String property, String value) {}
+  setPropertyValue(String property, String value) {
+    switch (property) {
+      case ContactProperties.name:
+        contactDetails = contactDetails.copyWith(name: value);
+        break;
+      case ContactProperties.website:
+        contactDetails = contactDetails.copyWith(website: value);
+        break;
+      case ContactProperties.designation:
+        contactDetails = contactDetails.copyWith(designation: value);
+        break;
+      case ContactProperties.company:
+        contactDetails = contactDetails.copyWith(company: value);
+        break;
+      case ContactProperties.address:
+        contactDetails = contactDetails.copyWith(address: value);
+        break;
+      case ContactProperties.email:
+        contactDetails = contactDetails.copyWith(email: value);
+        break;
+      case ContactProperties.mobile:
+        contactDetails = contactDetails.copyWith(mobile: value);
+        break;
+    }
+  }
+
+  bool isVCardEntryValid() {
+    return (contactDetails.name != null && contactDetails.address != null);
+  }
 }
 
 class LineItem extends StatelessWidget {
