@@ -1,16 +1,18 @@
 class ContactModel {
-    int? id = -1;
+    int? id ;
     String? name;
-    String? mobile = '';
-    String? email = '';
-    String? address = '';
-    String? company = '';
-    String? designation = '';
-    String? website = '';
-    String? image = '';
+    String? mobile ;
+    String? email;
+    String? address;
+    String? company;
+    String? designation;
+    String? website;
+    String? image;
+    // bool favourite = false;
+
 
     ContactModel({
-        this.id,
+        this.id = -1,
         this.name,
         this.mobile,
         this.email,
@@ -31,17 +33,19 @@ class ContactModel {
         String? designation,
         String? website,
         String? image,
+
     }) {
         return ContactModel(
             id: id ?? this.id,
             name: name ?? this.name,
-            mobile: mobile ?? this.name,
+            mobile: mobile ?? this.mobile,
             email: email ?? this.email,
             address: address ?? this.address,
             company: company ?? this.company,
             designation: designation ?? this.designation,
             website: website ?? this.website,
             image: image ?? this.image,
+
         );
     }
 

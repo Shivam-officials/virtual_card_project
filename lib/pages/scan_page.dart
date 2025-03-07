@@ -162,7 +162,7 @@ class _ScanPageState extends State<ScanPage> {
     }
   }
 
-  setPropertyValue(String property, String value) {
+  setPropertyValue(String property, String value ) {
     switch (property) {
       case ContactProperties.name:
         contactDetails = contactDetails.copyWith(name: value);
@@ -261,6 +261,7 @@ class _DragTargetItemState extends State<DragTargetItem> {
                         onTap: () {
                           setState(() {
                             dragItem = '';
+                            // widget.onDrop(widget.properties, dragItem); //not working as expected
                           });
                         },
                         child: const Icon(Icons.clear, size: 15),

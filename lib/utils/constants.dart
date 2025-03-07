@@ -10,3 +10,5 @@ abstract final class ContactProperties {
 
 const String hint =
     'Long press and Drag each item from below list and drop in the above appropriate box. You can drop multiple items on a single box';
+
+const errMsg  = 'this field must not be empty';
