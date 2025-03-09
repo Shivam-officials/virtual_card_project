@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
-import 'package:virtual_card_project/models/ContactModel.dart';
+import 'package:virtual_card_project/models/contact_model.dart';
 import 'package:virtual_card_project/pages/form_page.dart';
 import 'package:virtual_card_project/pages/home_page.dart';
 import 'package:virtual_card_project/pages/scan_page.dart';

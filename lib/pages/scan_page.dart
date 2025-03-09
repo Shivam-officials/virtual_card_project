@@ -4,7 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:virtual_card_project/models/ContactModel.dart';
+import 'package:virtual_card_project/models/contact_model.dart';
 import 'package:virtual_card_project/pages/form_page.dart';
 import 'package:virtual_card_project/utils/constants.dart';
 
@@ -162,7 +162,7 @@ class _ScanPageState extends State<ScanPage> {
     }
   }
 
-  setPropertyValue(String property, String value ) {
+  setPropertyValue(String property, String value) {
     switch (property) {
       case ContactProperties.name:
         contactDetails = contactDetails.copyWith(name: value);
@@ -189,7 +189,7 @@ class _ScanPageState extends State<ScanPage> {
   }
 
   bool isVCardEntryValid() {
-    return (contactDetails.name != null && contactDetails.address != null);
+    return (contactDetails.name != null && contactDetails.mobile != null);
   }
 }
 

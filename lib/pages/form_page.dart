@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:virtual_card_project/models/ContactModel.dart';
+import 'package:virtual_card_project/models/contact_model.dart';
 import 'package:virtual_card_project/utils/constants.dart';
 
 class FormPage extends StatefulWidget {
   final ContactModel contactDetails;
   static const String routeName = 'formPage';
-  FormPage({super.key, required this.contactDetails});
+  const FormPage({super.key, required this.contactDetails});
 
   @override
   State<FormPage> createState() => _FormPageState();
@@ -20,7 +20,10 @@ class _FormPageState extends State<FormPage> {
   final designationController = TextEditingController();
   final websiteController = TextEditingController();
 
-  final _formKey = GlobalKey<FormState>(); // to globally recognise the form we have to declare the key
+  final _formKey =
+      GlobalKey<
+        FormState
+      >(); // to globally recognise the form we have to declare the key
 
   @override
   Widget build(BuildContext context) {
@@ -128,6 +131,6 @@ class _FormPageState extends State<FormPage> {
       widget.contactDetails.designation = designationController.text;
       widget.contactDetails.website = websiteController.text;
     }
-    debugPrint(widget.contactDetails.toString());
+    debugPrint(widget.contactDetails.toMap().toString());
   }
 }
