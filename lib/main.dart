@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:virtual_card_project/models/contact_model.dart';
 import 'package:virtual_card_project/pages/form_page.dart';
 import 'package:virtual_card_project/pages/home_page.dart';
 import 'package:virtual_card_project/pages/scan_page.dart';
+import 'package:virtual_card_project/provider/state_provider.dart';
 
 void main() {
   // runApp(DevicePreview(enabled: kDebugMode, builder: (context) => MyApp())); // restart the app on every keyboard launch
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (BuildContext context) => StateProvider(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:virtual_card_project/models/contact_model.dart';
+import 'package:virtual_card_project/pages/home_page.dart';
+import 'package:virtual_card_project/provider/state_provider.dart';
 import 'package:virtual_card_project/utils/constants.dart';
+import 'package:virtual_card_project/utils/helper_functions.dart';
 
 class FormPage extends StatefulWidget {
   final ContactModel contactDetails;
@@ -132,5 +137,13 @@ class _FormPageState extends State<FormPage> {
       widget.contactDetails.website = websiteController.text;
     }
     debugPrint(widget.contactDetails.toMap().toString());
+    context.read<StateProvider>().insertContact(widget.contactDetails)
+    .then((onValue){
+      showMsg(context, "saved");
+    }).catchError((error){
+      showMsg(context, "Failed To save bcz ${error.toString()}");
+    });
+
+    context.goNamed(HomePage.routeName);
   }
 }

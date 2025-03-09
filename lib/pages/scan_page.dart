@@ -261,7 +261,7 @@ class _DragTargetItemState extends State<DragTargetItem> {
                         onTap: () {
                           setState(() {
                             dragItem = '';
-                            // widget.onDrop(widget.properties, dragItem); //not working as expected
+                            widget.onDrop(widget.properties, dragItem); //not working as expected
                           });
                         },
                         child: const Icon(Icons.clear, size: 15),
