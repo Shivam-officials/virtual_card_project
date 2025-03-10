@@ -93,4 +93,10 @@ class DbHelper {
       whereArgs: [contact.id],
     );
   }
+  
+  Future<List<ContactModel>> getAllFavouriteContacts() async{
+    final db = await _open();
+    final mapList = await db.query(DbContactConstants.tableContact,where: '${DbContactConstants.tableContactColFavorite} = ?',whereArgs: [true]);
+    return mapList.map((contact)=>ContactModel.fromMap(contact)).toList();
+  }
 }

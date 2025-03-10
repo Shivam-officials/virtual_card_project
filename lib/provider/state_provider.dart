@@ -38,16 +38,36 @@ class StateProvider extends ChangeNotifier {
   }
 
   Future<int> updateContactFavourite(ContactModel contact) {
-    final contactIndex = contactList.indexOf(contact);
-    contactList[contactIndex].favourite = !contactList[contactIndex].favourite;
-    var result = _db.updateContactFavourite(contactList[contactIndex]);
-    notifyListeners();
+    // The below approach finds the index of the contact in the list and updates its favourite status.
+    // This works because 'contact' is an instance of ContactModel stored in the list.
+    // Since Dart passes non-primitive objects (like List, Map, and custom classes) by reference,
+    // any changes made to 'contact' will also reflect in the original list.
+
+    // final contactIndex = contactList.indexOf(contact);
+    // contactList[contactIndex].favourite = !contactList[contactIndex].favourite;
+
+    /// Alternatively, we can directly toggle the 'favourite' property of 'contact'.
+    /// This is possible because 'contact' is already a reference to an object inside 'contactList'.
+    /// Modifying its properties here automatically updates the corresponding entry in 'contactList'.
+    contact.favourite = !contact.favourite;
+
+    var result = _db.updateContactFavourite(contact);
+
+    notifyListeners(); // Notify listeners about the change so the UI updates accordingly.
+
     return result;
   }
+
 
   Future<int> updateContact(ContactModel contact) {
     final result = _db.updateContact(contact);
     notifyListeners();
     return result;
   }
+
+  Future<void> getAllFavouriteContact()async{
+    contactList = await _db.getAllFavouriteContacts();
+    notifyListeners();
+  }
+
 }
