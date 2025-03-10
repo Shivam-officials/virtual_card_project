@@ -35,4 +35,11 @@ class StateProvider extends ChangeNotifier {
     /// removed that contactItem ListTile from the widget tree
     return _db.deleteContact(contactModel.id);
   }
+
+  Future<int> updateContactFavourite(ContactModel contact){
+    final contactIndex = contactList.indexOf(contact);
+    contactList[contactIndex].favourite = !contactList[contactIndex].favourite;
+    notifyListeners();
+    return _db.updateContactFavourite(contact);
+  }
 }

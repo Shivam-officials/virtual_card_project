@@ -81,11 +81,14 @@ class _HomePageState extends State<HomePage> {
                       title: Text(provider.contactList[index].name!),
                       subtitle: Text(provider.contactList[index].mobile!),
                       trailing: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          provider.updateContactFavourite(provider.contactList[index]);
+                        },
                         icon: Icon(
                           provider.contactList[index].favourite
                               ? Icons.favorite
                               : Icons.favorite_border,
+                          size: 30,
                         ),
                       ),
                     ),

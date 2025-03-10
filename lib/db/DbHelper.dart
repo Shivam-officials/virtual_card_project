@@ -67,4 +67,10 @@ class DbHelper {
       // whereArgs: [id,false],
     );
   }
+
+  Future<int> updateContactFavourite(ContactModel contactModel) async{
+    final db = await _open();
+    final value = contactModel.favourite?0:1;
+    return db.update(DbContactConstants.tableContact, {DbContactConstants.tableContactColFavorite: value },where: "DbContactConstants.tableContactColId = ?", whereArgs: [contactModel.id]);
+  }
 }
