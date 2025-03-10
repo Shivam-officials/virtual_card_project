@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:virtual_card_project/pages/scan_page.dart';
 import 'package:virtual_card_project/provider/state_provider.dart';
+import 'package:virtual_card_project/utils/helper_functions.dart';
 
 class HomePage extends StatefulWidget {
   static final String routeName = '/';
@@ -48,10 +49,10 @@ class _HomePageState extends State<HomePage> {
           currentIndex: selectedIndex,
           backgroundColor: Colors.blue[100],
           items: [
-            BottomNavigationBarItem(icon: Expanded(child: Icon(Icons.person)), label: 'All'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'All'),
 
             BottomNavigationBarItem(
-              icon: Expanded(child: Icon(Icons.favorite)),
+              icon: Icon(Icons.favorite),
               label: 'Favourite',
             ),
           ],
@@ -62,20 +63,61 @@ class _HomePageState extends State<HomePage> {
             (context, provider, child) => ListView.builder(
               itemCount: context.read<StateProvider>().contactList.length,
               itemBuilder:
-                  (context, index) => ListTile(
-                    title: Text(provider.contactList[index].name!),
-                    subtitle: Text(provider.contactList[index].mobile!),
-                    trailing: IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        provider.contactList[index].favourite
-                            ? Icons.favorite
-                            : Icons.favorite_border,
+                  (context, index) => Dismissible(
+                    key: UniqueKey(),
+                    direction: DismissDirection.endToStart,
+                    background: Container(
+                      alignment: FractionalOffset.centerRight,
+                      padding: EdgeInsets.only(right: 35.0),
+                      color: Colors.red,
+                      child: Icon(Icons.delete, size: 25, color: Colors.white),
+                    ),
+                    confirmDismiss: _showMsgDialog,
+                    onDismissed: (direction) {
+                      provider.deleteContact(provider.contactList[index]);
+                      showMsg(context, "Delete");
+                    },
+                    child: ListTile(
+                      title: Text(provider.contactList[index].name!),
+                      subtitle: Text(provider.contactList[index].mobile!),
+                      trailing: IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          provider.contactList[index].favourite
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                        ),
                       ),
                     ),
                   ),
             ),
       ),
+    );
+  }
+
+
+
+  Future<bool?> _showMsgDialog(DismissDirection direction) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Delete Contact"),
+          content: Text("Do u really wanna delete this contact"),
+          actions: [
+            OutlinedButton(
+              onPressed: () => context.pop(false),
+              child: Text("No"),
+            ),
+            // context.pop(false) here false will be return the in the confirmDismiss parameter of the Dismissible which will then reject the dismiss
+            OutlinedButton(
+              onPressed: () => context.pop(true),
+              child: Text("Yes"),
+            ),
+            // context.pop(true) here true will be return the in the confirmDismiss parameter of the Dismissible which will then accept the dismiss getstrue and remove the dismissible from the widget tree
+          ],
+        );
+      },
     );
   }
 }
