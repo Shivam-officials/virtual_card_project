@@ -30,16 +30,24 @@ class StateProvider extends ChangeNotifier {
 
   Future<int> deleteContact(ContactModel contactModel) async {
     contactList.remove(contactModel);
+
     /// here we don't need notifyListeners() method bcz we don't need to rebuild
     /// the ui to reflect the new list bcz dismissible has already
     /// removed that contactItem ListTile from the widget tree
     return _db.deleteContact(contactModel.id);
   }
 
-  Future<int> updateContactFavourite(ContactModel contact){
+  Future<int> updateContactFavourite(ContactModel contact) {
     final contactIndex = contactList.indexOf(contact);
     contactList[contactIndex].favourite = !contactList[contactIndex].favourite;
+    var result = _db.updateContactFavourite(contactList[contactIndex]);
     notifyListeners();
-    return _db.updateContactFavourite(contact);
+    return result;
+  }
+
+  Future<int> updateContact(ContactModel contact) {
+    final result = _db.updateContact(contact);
+    notifyListeners();
+    return result;
   }
 }
