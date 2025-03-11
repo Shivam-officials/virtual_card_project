@@ -1,16 +1,56 @@
+
 # virtual_card_project
 
-A new Flutter project.
+# Contact Manager App
 
-## Getting Started
+This Flutter app demonstrates CRUD (Create, Read, Update, Delete) operations using the **sqflite** plugin. It also integrates Google ML Kit for text extraction, providing a seamless experience for managing contact information from visiting cards.
 
-This project is a starting point for a Flutter application.
+## Features
+✅ **Home Screen**
+- Bottom Navigation Bar with:
+  - **All Contacts** tab
+  - **Favourites** tab
+- Each contact has its own **Contact Details Page** with:
+  - **Call**, **Email**, **Map**, and **SMS** actions (using `url_launcher`)
+  - Displays the contact’s visiting card image and details
 
-A few resources to get you started if this is your first Flutter project:
+✅ **Scan Page**
+- Accessible via the Floating Action Button (FAB) in the center
+- Supports image loading from:
+  - **Gallery**
+  - **Camera**
+- Uses **Google ML Kit** for text extraction
+- Includes **Drag and Drop** functionality to assign extracted text to the correct fields
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+✅ **Form Page**
+- Allows users to edit contact information if data is incorrectly extracted
+- Enables saving contact details to a permanent database using **sqflite**
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+✅ **Database Management**
+- All contact details are stored securely using **sqflite**
+- Supports CRUD operations efficiently
+
+## Tech Stack
+- **Flutter**
+- **sqflite** (Database)
+- **Provider** (State Management)
+- **flutter_easyloading** (Loading Indicators)
+- **google_mlkit_text_recognition** (Text Extraction)
+- **image_picker** (Image Selection)
+- **go_router** (Navigation)
+- **url_launcher** (Handling External Links)
+
+## Screenshots
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/2f533ad0-8b57-46b7-945d-5312c847be26" width="250" />
+  <img src="https://github.com/user-attachments/assets/cbb77123-96e0-4dbb-977e-c2386bb4a94a" width="250" />
+  <img src="https://github.com/user-attachments/assets/9fb80662-a0c6-4e2b-8ad8-f86124a09514" width="250" />
+  <img src="https://github.com/user-attachments/assets/a425c187-89d9-488e-9176-7bf3500257f7" width="250" />
+  <img src="https://github.com/user-attachments/assets/056fd975-502c-438a-ba2a-faf9dadac92a" width="250" />
+</p>
+
+
+---
+
+Feel free to contribute or provide suggestions for enhancing this project!
+
