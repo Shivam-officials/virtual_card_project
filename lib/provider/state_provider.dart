@@ -7,6 +7,9 @@ class StateProvider extends ChangeNotifier {
   final _db = DbHelper();
   List<ContactModel> contactList = [];
 
+  // get the contact throught the contact id
+  Future<ContactModel>  getContactById(int id) => _db.getContactById(id);
+
   // TODO: Why am I returning a Future? Should I have made it like a normal function
   // returning an int or another value directly instead of a Future?
   /// The reason for returning a Future is that it allows asynchronous control
@@ -58,16 +61,14 @@ class StateProvider extends ChangeNotifier {
     return result;
   }
 
-
   Future<int> updateContact(ContactModel contact) {
     final result = _db.updateContact(contact);
     notifyListeners();
     return result;
   }
 
-  Future<void> getAllFavouriteContact()async{
+  Future<void> getAllFavouriteContact() async {
     contactList = await _db.getAllFavouriteContacts();
     notifyListeners();
   }
-
 }

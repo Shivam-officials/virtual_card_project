@@ -15,7 +15,8 @@ class DbHelper {
   ${DbContactConstants.tableContactColDesignation} text,
   ${DbContactConstants.tableContactColCompany} text,
   ${DbContactConstants.tableContactColWebsite} text,
-  ${DbContactConstants.tableContactColFavorite} integer)''';
+  ${DbContactConstants.tableContactColFavorite} integer,
+  ${DbContactConstants.tableContactColImage} text)''';
 
   ///returns the database object for any database operation
   Future<Database> _open() async {
@@ -25,18 +26,32 @@ class DbHelper {
     debugPrint(' the root address of db is --> $root');
 
     // make a Database file contact.db at the location root path inside which our tables will be stored
-    final dbPath = P.join(root, 'contact.db');
+    final dbPath = P.join(root, 'contact2.db');
 
     // opens the database at the given path and return the db object already created one ..
     // and if not created then return it after creating the database object
     return openDatabase(
       dbPath,
       version: 1,
+      onDowngrade: (db, oldVersion, newVersion) { db.execute(_createTableContact);},
       onCreate: (db, version) {
         /// execute the sql command since we are in the onCreate ftn which would be executed for the
         /// first time when the database object is created when can use this opportunity to create
         /// database tables and some sql setup for our db
         db.execute(_createTableContact);
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion == 1) {
+          db.execute(
+            'alter table ${DbContactConstants.tableContact} rename to tbl_contact_old',
+          );
+          db.execute(_createTableContact);
+          final rows = await db.query('tbl_contact_old');
+          for (final row in rows) {
+            db.insert(DbContactConstants.tableContact, row);
+          }
+          db.execute("drop table if exists tbl_contact_old ");
+        }
       },
     );
   }
@@ -74,7 +89,7 @@ class DbHelper {
 
   Future<int> updateContactFavourite(ContactModel contact) async {
     final db = await _open();
-    final value = contact.favourite  ? 1 : 0;
+    final value = contact.favourite ? 1 : 0;
     return db.update(
       DbContactConstants.tableContact,
       {DbContactConstants.tableContactColFavorite: value},
@@ -93,10 +108,24 @@ class DbHelper {
       whereArgs: [contact.id],
     );
   }
-  
-  Future<List<ContactModel>> getAllFavouriteContacts() async{
+
+  Future<List<ContactModel>> getAllFavouriteContacts() async {
     final db = await _open();
-    final mapList = await db.query(DbContactConstants.tableContact,where: '${DbContactConstants.tableContactColFavorite} = ?',whereArgs: [true]);
-    return mapList.map((contact)=>ContactModel.fromMap(contact)).toList();
+    final mapList = await db.query(
+      DbContactConstants.tableContact,
+      where: '${DbContactConstants.tableContactColFavorite} = ?',
+      whereArgs: [true],
+    );
+    return mapList.map((contact) => ContactModel.fromMap(contact)).toList();
+  }
+
+  Future<ContactModel> getContactById(int id) async {
+    final db = await _open();
+    final mapList = await db.query(
+      DbContactConstants.tableContact,
+      where: "${DbContactConstants.tableContactColId}= ?",
+      whereArgs: [id],
+    );
+    return ContactModel.fromMap(mapList.first);
   }
 }

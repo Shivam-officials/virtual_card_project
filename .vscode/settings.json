@@ -1,0 +1,7 @@
+{
+    "editor.inlayHints.enabled": "on",
+    "dart.previewFlutterUiGuides": false,
+    "dart.previewCommitCharacters": true,
+    "editor.inlayHints.padding": true,
+    "editor.inlineCompletionsAccessibilityVerbose": true
+}

@@ -9,6 +9,7 @@ abstract final class DbContactConstants {
   static const String tableContactColDesignation = 'designation';
   static const String tableContactColCompany = 'company';
   static const String tableContactColWebsite = 'website';
+  static const String tableContactColImage = 'image';
   static const String tableContactColFavorite = 'favourite';
 }
 
@@ -73,6 +74,7 @@ class ContactModel {
       DbContactConstants.tableContactColCompany: company,
       DbContactConstants.tableContactColDesignation: designation,
       DbContactConstants.tableContactColWebsite: website,
+      DbContactConstants.tableContactColImage: image,
       DbContactConstants.tableContactColFavorite: favourite ? 1 : 0,
       if(id>0) DbContactConstants.tableContactColId:id,
       // id will be automatically inserted/incremented through sqfLite
@@ -92,6 +94,7 @@ class ContactModel {
     designation:tableContactRow[DbContactConstants.tableContactColDesignation],
     company:tableContactRow[DbContactConstants.tableContactColCompany],
     website:tableContactRow[DbContactConstants.tableContactColWebsite],
+    image: tableContactRow[DbContactConstants.tableContactColImage],
     favourite:tableContactRow[DbContactConstants.tableContactColFavorite]==1?true:false,
   );
 

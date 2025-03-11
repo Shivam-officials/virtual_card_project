@@ -141,6 +141,7 @@ class _FormPageState extends State<FormPage> {
     .then((onValue){
       showMsg(context, "saved");
     }).catchError((error){
+      debugPrint(error.toString());
       showMsg(context, "Failed To save bcz ${error.toString()}");
     });
 

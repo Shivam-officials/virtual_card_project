@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:virtual_card_project/pages/contact_details.dart';
 import 'package:virtual_card_project/pages/scan_page.dart';
 import 'package:virtual_card_project/provider/state_provider.dart';
 import 'package:virtual_card_project/utils/helper_functions.dart';
@@ -64,7 +65,9 @@ class _HomePageState extends State<HomePage> {
             (context, provider, child) => ListView.builder(
               itemCount: context.read<StateProvider>().contactList.length,
               itemBuilder:
-                  (context, index) => Dismissible(
+                  (context, index) {
+                    var currentContact = provider.contactList[index];
+                    return Dismissible(
                     key: UniqueKey(),
                     direction: DismissDirection.endToStart,
                     background: Container(
@@ -79,11 +82,19 @@ class _HomePageState extends State<HomePage> {
                       showMsg(context, "Delete");
                     },
                     child: ListTile(
-                      title: Text(provider.contactList[index].name!),
+                      title: Text(currentContact.name!),
+                      onTap: () {
+                        context.goNamed(
+                          ContactDetails.routeName,
+                          extra: provider.contactList[index].id,
+                        );
+                      },
                       subtitle: Text(provider.contactList[index].mobile!),
                       trailing: IconButton(
                         onPressed: () {
-                          provider.updateContactFavourite(provider.contactList[index]);
+                          provider.updateContactFavourite(
+                            provider.contactList[index],
+                          );
                         },
                         icon: Icon(
                           provider.contactList[index].favourite
@@ -93,13 +104,12 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                  ),
+                  );
+                  },
             ),
       ),
     );
   }
-
-
 
   Future<bool?> _showMsgDialog(DismissDirection direction) {
     return showDialog(
@@ -125,13 +135,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _fetchData () {
-    switch(selectedIndex) {
+  void _fetchData() {
+    switch (selectedIndex) {
       case 0:
-          context.read<StateProvider>().getAllContact();
+        context.read<StateProvider>().getAllContact();
         break;
-      default: context.read<StateProvider>().getAllFavouriteContact();
+      default:
+        context.read<StateProvider>().getAllFavouriteContact();
     }
-
   }
 }
