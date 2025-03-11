@@ -67,7 +67,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                 ),
                 if(contact.address != null && contact.address!.isNotEmpty)ListTile(
                   title: Text(contact.address!),
-                  trailing: IconButton(onPressed: _openMap(contact.address!),
+                  trailing: IconButton(onPressed:()=> _openMap(contact.address!),
                       icon: Icon(Icons.navigation)),
                 ),
                 if(contact.website != null && contact.website!.isNotEmpty)ListTile(
@@ -108,7 +108,7 @@ class _ContactDetailsState extends State<ContactDetails> {
     }
   }
 
-  _openMap(String address ) async{
+   Future<void> _openMap(String address ) async{
 
     final value = address.replaceAll(' ', '+');
     String url = '';
